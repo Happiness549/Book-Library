@@ -1,46 +1,29 @@
-import { useState } from 'react'
-import BookList from './components/BookList';
-import BookForm from './components/BookForm';
-import './App.css';
 
-function Books() {
-  const [books, setBooks] = useState(() => {
-    const storeBooks = localStorage.getItem('myBooks');
-    return storeBooks
-    ? JSON.parse(storeBooks)
-    : [
-      {title: "After, author: Anna Tod", pages: 455, read: true}
-    ];
-  });
+import React, { useState, useEffect } from 'react';
+import BookForm from './components/BookForm.jsx';
+import BookList from './components/BookList.jsx';
 
-  useEffect(() => {
-    localStorage.setItem('myBooks', JSON.stringify(books));
-  }, [books]);
 
-  const addBooks = (book) => {
-    setBooks([...books, { ...book, read:false}]);
+function App() {
+  const [books, setBooks] = useState([]);
+
+  const addBook = (book) => {
+    setBooks([...books, book]);
   };
 
-  const deleteBook = (indexToDelete) => {
-    setBooks(books.filter((_, index) => index !== indexToDelete));
+  const deleteBook = (index) => {
+    const newBooks = books.filter((_, i) => i !== index);
+    setBooks(newBooks);
   };
 
-  const toggleReadStatus = (indexToToggle) => {
-    const updateBooks = books.map((book, index) => index === indexToToggle ?{ ... book,
-      red: !book.read} : book);
-      setBooks(updateBooks);
-  };
-
-  return(
-    <div>
+  return (
+    <div className="App">
       <h1>My Book Library</h1>
-      <BookForm onAddBook={addBook} /> 
-      <BookList
-      books={books}
-      onDelete ={deleteBook}
-      onToggleRead={toggleReadStatus} />
+      <BookForm onAddBook={addBook} />
+      <BookList books={books} 
+      deleteBook={deleteBook} />
     </div>
   );
 }
 
-export default Books;
+export default App;

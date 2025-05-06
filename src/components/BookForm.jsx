@@ -3,14 +3,14 @@ import {useState} from 'react';
 function BookForm({onAddBook}) {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
-    const [pages, setpages] = useState('');
+    const [pages, setPages] = useState('');
 
     const handleSubmit = (e) => {
-        e.preventdefault();
+        e.preventDefault();
         onAddBook({title, author, pages: parseInt(pages) });
         setTitle('');
         setAuthor('');
-        setpages('');
+        setPages('');
     };
 
     return(
